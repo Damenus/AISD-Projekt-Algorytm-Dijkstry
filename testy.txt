@@ -1,0 +1,145 @@
+#include <iostream>
+ 
+using namespace std;
+/* =18
+9 8 0 0 8 7 0
+0 0 0 0 0 0 0 0 8
+0 9 9 9 9 9 9 9 0
+0 1 0 1 0 0 0 9 0
+0 9 0 0 0 1 0 9 0
+0 9 1 1 1 1 0 9 0
+0 9 0 0 0 0 0 9 0
+0 9 9 9 9 1 9 9 0
+8 0 0 0 0 0 0 0 0
+ 
+=60
+11 11 0 0 10 10 0
+0   0   0   0   0   0   0   0   0   0 100
+100 100 100 100 100 100 100 100 100   0 100
+100   0   0   0   0   0   0   0 100   0 100
+100   0 100 100 100 100 100   0 100   0 100
+100   0 100   0   0   0 100   0 100   0 100
+100   0 100   0 100   0 100   0 100   0 100
+100   0 100   0 100   0   0   0 100   0 100
+100   0 100   0 100 100 100 100 100   0 100
+100   0 100   0   0   0   0   0   0   0 100
+100   0 100 100 100 100 100 100 100 100 100
+100   0   0   0   0   0   0   0   0   0   0
+ 
+=4
+6 4 2 0 5 1 0
+0 9 0 0 0 0
+0 9 0 0 0 0
+0 9 0 0 3 3
+0 0 0 0 3 0
+*/
+const int MAXINT = 2147483647;
+int szerokosc, wysokosc, start_szerokosc, start_wysokosc, finish_szerokosc, finish_wysokosc, liczba_wyciagow;
+int wyciag_start_szerokosc, wyciag_start_wysokosc, wyciag_finish_szerokosc, wyciag_finish_wysokosc, wyciag_czas_podrozy, wyciag_czas_odjazdu;
+int **tab;
+int **Q;
+int zmienna;
+int najminiejszy = MAXINT;
+ 
+ 
+void dijskra(){
+ 
+        Q[0][0] = 0;
+        Q[start_szerokosc][start_wysokosc] = 0;
+        for (int i = 0; i < szerokosc*wysokosc; i++) {
+        for ( start_szerokosc = 0; start_szerokosc < szerokosc; start_szerokosc++)
+                for (start_wysokosc = 0; start_wysokosc < wysokosc; start_wysokosc++) {
+ 
+                if (start_szerokosc + 1 < szerokosc)
+                        if (tab[start_szerokosc + 1][start_wysokosc] > tab[start_szerokosc][start_wysokosc])
+                        {
+                        if (Q[start_szerokosc + 1][start_wysokosc] >(zmienna = Q[start_szerokosc][start_wysokosc] + tab[start_szerokosc + 1][start_wysokosc] - tab[start_szerokosc][start_wysokosc] + 1))
+                                Q[start_szerokosc + 1][start_wysokosc] = zmienna;
+                        }
+                        else
+                                if (Q[start_szerokosc + 1][start_wysokosc] >(zmienna = Q[start_szerokosc][start_wysokosc] + 1))
+                                        Q[start_szerokosc + 1][start_wysokosc] = zmienna;
+ 
+                if (start_szerokosc - 1 >= 0)
+                        if (tab[start_szerokosc - 1][start_wysokosc] > tab[start_szerokosc][start_wysokosc])
+                        {
+                        if (Q[start_szerokosc - 1][start_wysokosc] > (zmienna = Q[start_szerokosc][start_wysokosc] + tab[start_szerokosc - 1][start_wysokosc] - tab[start_szerokosc][start_wysokosc] + 1))
+                                Q[start_szerokosc - 1][start_wysokosc] = zmienna;
+                        }
+                        else
+                                if (Q[start_szerokosc - 1][start_wysokosc] > (zmienna = Q[start_szerokosc][start_wysokosc] + 1))
+                                        Q[start_szerokosc - 1][start_wysokosc] = zmienna;
+ 
+                if (start_wysokosc + 1 < wysokosc)
+                        if (tab[start_szerokosc][start_wysokosc + 1] > tab[start_szerokosc][start_wysokosc])
+                        {
+                        if (Q[start_szerokosc][start_wysokosc + 1] > (zmienna = Q[start_szerokosc][start_wysokosc] + tab[start_szerokosc][start_wysokosc + 1] - tab[start_szerokosc][start_wysokosc] + 1))
+                                Q[start_szerokosc][start_wysokosc + 1] = zmienna;
+                        }
+                        else
+                                if (Q[start_szerokosc][start_wysokosc + 1] > (zmienna = Q[start_szerokosc][start_wysokosc] + 1))
+                                        Q[start_szerokosc][start_wysokosc + 1] = zmienna;
+ 
+                if (start_wysokosc - 1 >= 0)
+                        if (tab[start_szerokosc][start_wysokosc - 1] > tab[start_szerokosc][start_wysokosc])
+                        {
+                        if (Q[start_szerokosc][start_wysokosc - 1] > (zmienna = Q[start_szerokosc][start_wysokosc] + tab[start_szerokosc][start_wysokosc - 1] - tab[start_szerokosc][start_wysokosc] + 1))
+                                Q[start_szerokosc][start_wysokosc - 1] = zmienna;
+                        }
+                        else
+                                if (Q[start_szerokosc][start_wysokosc - 1] > (zmienna = Q[start_szerokosc][start_wysokosc] + 1))
+                                        Q[start_szerokosc][start_wysokosc - 1] = zmienna;
+                }
+        }
+}
+ 
+ 
+int main()
+{
+        int wpisywana;
+ 
+        //scanf("%i %i %i %i %i %i %i", &szerokosc, &wysokosc, &start_szerokosc, &start_wysokosc, &finish_szerokosc, &finish_wysokosc, &liczba_wyciagow);
+        scanf("%i %i %i %i %i %i %i", &wysokosc, &szerokosc, &start_wysokosc, &start_szerokosc, &finish_wysokosc, &finish_szerokosc, &liczba_wyciagow);
+        for (int i = 0; i < liczba_wyciagow; i++)
+                scanf("%i %i %i %i %i %i", &wyciag_start_szerokosc, &wyciag_start_wysokosc, &wyciag_finish_szerokosc, &wyciag_finish_wysokosc, &wyciag_czas_podrozy, &wyciag_czas_odjazdu);
+        int dom = start_szerokosc, dom2 = start_wysokosc;
+ 
+        tab = new int *[szerokosc];
+        Q = new int *[szerokosc];
+ 
+        for (int i = 0; i < szerokosc; i++) {
+                tab[i] = new int[wysokosc];
+                Q[i] = new int[wysokosc];
+        }
+ 
+        for (int i = 0; i < szerokosc; i++)
+                for (int j = 0; j < wysokosc; j++)
+                {
+                        scanf("%i", &wpisywana);
+                        tab[i][j] = wpisywana;
+                        Q[i][j] = MAXINT;
+                }
+ 
+        dijskra();
+ 
+        //cout << Q[finish_szerokosc][finish_wysokosc] - Q[dom2][dom] << endl;
+        printf("%i", Q[finish_szerokosc][finish_wysokosc]);
+        /*
+        cout << endl;
+        for (int i = 0; i < szerokosc; i++) {
+                for (int j = 0; j < wysokosc; j++)
+                {
+                        cout << Q[i][j] << " ";
+                }
+                cout << endl;
+        }
+        */
+        
+        for (int i = 0; i < szerokosc; i++)
+                delete [] tab[i];
+        delete[] tab;
+ 
+//      system("PAUSE");
+        
+        return 0;
+}
